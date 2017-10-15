@@ -1,0 +1,8 @@
+@startuml
+
+Usuario -> Mensagem: Composição
+Usuario -> Mensagem: Requisição de envio
+Mensagem -> Grupo: Envio
+Usuario <- Grupo: Confirmação de envio
+
+@enduml

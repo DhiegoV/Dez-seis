@@ -1,0 +1,27 @@
+@startuml
+
+class Usuario {
+    str nome
+    str apelido
+    str e-mail
+
+    receber_mensagem()
+    enviar_convite()
+}
+
+class Mensagem {
+    Usuario dono
+    str conteudo
+}
+
+class Grupo {
+    list<Usuario> administradores
+    list<Usuario> integrantes
+    dict[momento:Mensagem] mensagens
+}
+
+Usuario "1"--"n  " Mensagem
+Grupo "1"--"n " Mensagem
+Grupo "n  "--"n " Usuario
+
+@enduml

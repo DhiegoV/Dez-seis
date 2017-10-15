@@ -1,0 +1,10 @@
+@startuml
+
+Usuário as usr
+
+usr -> (manter mensagem)
+usr -> (manter grupo)
+usr -> (participar de grupo)
+usr -> (trocar mensagens diretas)
+
+@enduml
