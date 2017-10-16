@@ -2,9 +2,14 @@
 
 Usuário as usr
 
-usr -> (manter mensagem)
-usr -> (manter grupo)
-usr -> (participar de grupo)
-usr -> (trocar mensagens diretas)
+usr -right-> (manter informações pessoais)
+usr -left-> (logar)
+usr -up-> (adicionar amigo)
+usr -up-> (desfazer amizade)
+usr -up-> (trocar mensagens diretas)
+usr -down-> (trocar mensagens em grupo)
+usr -down-> (postar no perfil)
+usr -left-> (postar em grupo)
+usr -down-> (pesquisar amigos)
 
 @enduml

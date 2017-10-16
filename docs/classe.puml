@@ -1,27 +1,52 @@
 @startuml
 
+skinparam shadowing false
+
 class Usuario {
     str nome
     str apelido
+    str idade
     str e-mail
+    list<Conversa> conversas
+    list<Postagem> feed
 
-    receber_mensagem()
-    enviar_convite()
+    enviar_convite_amizade()
+    desfazer_amizade()
+}
+
+class Conversa {
+    list<Usuario> participantes
+    list<Mensagem> mensagens
+
+    enviar_mensagem()
 }
 
 class Mensagem {
     Usuario dono
+    str momento
     str conteudo
 }
 
-class Grupo {
-    list<Usuario> administradores
-    list<Usuario> integrantes
-    dict[momento:Mensagem] mensagens
+Usuario "2..n"-right-"0..n" Conversa: participa de
+(Usuario, Conversa) .. Mensagem
+
+class Postagem {
+    str conteudo
+    str assunto
+    bool eh_publico
 }
 
-Usuario "1"--"n  " Mensagem
-Grupo "1"--"n " Mensagem
-Grupo "n  "--"n " Usuario
+Usuario "1 "--"0..n " Postagem: " tem"
+
+class Grupo {
+    list<Usuario> integrantes
+    list<Usuario> administradores
+    list<Postagem> postagens
+
+    criar()
+}
+
+Usuario "1..n"-down-"0..n" Grupo: participa de
+(Usuario, Grupo) .. Postagem
 
 @enduml
