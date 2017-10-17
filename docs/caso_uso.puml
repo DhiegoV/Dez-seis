@@ -9,7 +9,7 @@ usr -up-> (desfazer amizade)
 usr -up-> (trocar mensagens diretas)
 usr -down-> (trocar mensagens em grupo)
 usr -down-> (postar no perfil)
-usr -left-> (postar em grupo)
+usr -left-> (postar em um grupo)
 usr -down-> (pesquisar amigos)
 
 @enduml

@@ -5,11 +5,13 @@ skinparam shadowing false
 class Usuario {
     str nome
     str apelido
-    str idade
-    str e-mail
+    str email
+    int idade
+    list<Mensagem> notificacoes
     list<Conversa> conversas
     list<Postagem> feed
 
+    postar_no_perfil()
     enviar_convite_amizade()
     desfazer_amizade()
 }
@@ -22,9 +24,9 @@ class Conversa {
 }
 
 class Mensagem {
-    Usuario dono
-    str momento
     str conteudo
+    Usuario dono
+    datetime momento
 }
 
 Usuario "2..n"-right-"0..n" Conversa: participa de
@@ -33,6 +35,8 @@ Usuario "2..n"-right-"0..n" Conversa: participa de
 class Postagem {
     str conteudo
     str assunto
+    datetime momento
+    Usuario dono
     bool eh_publico
 }
 
@@ -42,11 +46,16 @@ class Grupo {
     list<Usuario> integrantes
     list<Usuario> administradores
     list<Postagem> postagens
+    bool eh_publico
 
-    criar()
+    postar()
+    solicitar_entrada()
+    adicionar_membro()
+    remover_membro()
+    tornar_admin()
 }
 
-Usuario "1..n"-down-"0..n" Grupo: participa de
+Usuario "1..n "-down-"0..n " Grupo: participa de
 (Usuario, Grupo) .. Postagem
 
 @enduml
