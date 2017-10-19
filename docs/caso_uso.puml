@@ -6,10 +6,11 @@ usr -right-> (manter informações pessoais)
 usr -left-> (logar)
 usr -up-> (adicionar amigo)
 usr -up-> (desfazer amizade)
-usr -up-> (trocar mensagens diretas)
-usr -down-> (trocar mensagens em grupo)
+usr -up-> (trocar mensagem direta)
+usr -down-> (trocar mensagem em grupo)
 usr -down-> (postar no perfil)
 usr -left-> (postar em um grupo)
+usr -down-> (cadastrar-se)
 usr -down-> (pesquisar amigos)
 
 @enduml

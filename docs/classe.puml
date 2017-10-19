@@ -6,11 +6,13 @@ class Usuario {
     str nome
     str apelido
     str email
+    str status
     int idade
     list<Mensagem> notificacoes
     list<Conversa> conversas
     list<Postagem> feed
 
+    mudar_status()
     postar_no_perfil()
     enviar_convite_amizade()
     desfazer_amizade()
@@ -25,21 +27,17 @@ class Conversa {
 
 class Mensagem {
     str conteudo
-    Usuario dono
+    Usuario enviador
     datetime momento
 }
-
-Usuario "2..n"-right-"0..n" Conversa: participa de
+Usuario "2..n"--right--"0..n" Conversa: participa de
 (Usuario, Conversa) .. Mensagem
 
 class Postagem {
-    str conteudo
     str assunto
-    datetime momento
-    Usuario dono
     bool eh_publico
 }
-
+Mensagem <|-left- Postagem
 Usuario "1 "--"0..n " Postagem: " tem"
 
 class Grupo {
@@ -54,8 +52,7 @@ class Grupo {
     remover_membro()
     tornar_admin()
 }
-
-Usuario "1..n "-down-"0..n " Grupo: participa de
+Usuario "1..n "--"0..n " Grupo: participa de
 (Usuario, Grupo) .. Postagem
 
 @enduml
