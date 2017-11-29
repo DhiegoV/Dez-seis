@@ -1,4 +1,4 @@
 
-from Sistema import Sistema
+from src.Sistema import Sistema
 
 s = Sistema()

@@ -1,5 +1,5 @@
 
-from Usuario import Usuario
+from src.Usuario import Usuario
 
 class Sistema:
 
@@ -25,6 +25,8 @@ class Sistema:
     def listar_usuarios(self):
         for usuario in self.usuarios:
             print(usuario)
+    def deslogar(self):
+        self.usuario_logado = self.login()
 
     def menu(self):
         while True:
@@ -33,10 +35,13 @@ class Sistema:
                   "\n3. Mudar apelido"
                   "\n4. Mudar idade"
                   "\n5. Mudar nome"
-                  "\n6. Listar usuários")
+                  "\n6. Listar usuários"
+                  "\n0. Sair, Altair")
             resposta = int(input(": "))
 
-            if resposta == 1:  # Remover conta
+            if resposta == 0:  # Sair
+                self.deslogar()
+            elif resposta == 1:  # Remover conta
                 self.remover_conta(self.usuario_logado)
             elif resposta == 2:  # Mudar status
                 novo_status = input('Status: ')
@@ -59,12 +64,15 @@ class Sistema:
         tem_conta = input("Tens conta? (s/n): ")
 
         if tem_conta == "s":
-            email = input("Email: ")
-            senha = input("Senha: ")
+            while True:
+                email = input("Email: ")
+                senha = input("Senha: ")
 
-            for usuario in self.usuarios:
-                if usuario.email == email and usuario.senha == senha:
-                    return usuario
+                for usuario in self.usuarios:
+                    if usuario.get_email() == email and usuario.get_senha() == senha:
+                        return usuario
+                else:
+                    print("senha incorreta ou usuário não cadastrado")
         else:
             deseja_ter_conta = input("Desejas uma? (s/n): ")
 

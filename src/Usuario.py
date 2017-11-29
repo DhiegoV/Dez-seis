@@ -23,4 +23,11 @@ class Usuario:
         if len(nome) > 0:
             self.nome = nome
 
+    def get_email(self):
+        return self.email
+
+    def get_senha(self):
+        return self.senha
+
+
 
