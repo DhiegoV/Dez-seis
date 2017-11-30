@@ -5,8 +5,8 @@ class Usuario:
         self.nome = nome
         self.email = email
         self.idade = idade
-        self.status = ""
         self.senha = senha
+        self.status = ""
         self.apelido = ""
 
     def set_status(self, status):

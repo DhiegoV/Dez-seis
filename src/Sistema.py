@@ -1,12 +1,13 @@
 
-from Usuario import Usuario
+from src.Usuario import Usuario
+
 
 class Sistema:
 
     def __init__(self):
         self.usuarios = []
         self.usuario_logado = self.login()
-        self.menu()
+        # self.menu_principal = menu_principal
 
     def cadastrar_conta(self):
         nome = input("Nome: ")
@@ -22,6 +23,7 @@ class Sistema:
         self.usuarios.remove(usuario_logado)
         exit()
 
+    @staticmethod
     def listar_usuarios(self):
         for usuario in self.usuarios:
             print(usuario)
