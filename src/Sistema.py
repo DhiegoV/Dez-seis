@@ -7,7 +7,7 @@ class Sistema:
     def __init__(self):
         self.usuarios = []
         self.usuario_logado = self.login()
-        # self.menu_principal = menu_principal
+        self.mostrar_menu()
 
     def cadastrar_conta(self):
         nome = input("Nome: ")
@@ -23,39 +23,32 @@ class Sistema:
         self.usuarios.remove(usuario_logado)
         exit()
 
-    @staticmethod
     def listar_usuarios(self):
         for usuario in self.usuarios:
             print(usuario)
 
-    def menu(self):
-        while True:
-            print("\n1. Remover conta"
-                  "\n2. Mudar status"
-                  "\n3. Mudar apelido"
-                  "\n4. Mudar idade"
-                  "\n5. Mudar nome"
-                  "\n6. Listar usuários")
-            resposta = int(input(": "))
+    def mostrar_menu(self):
 
-            if resposta == 1:  # Remover conta
-                self.remover_conta(self.usuario_logado)
-            elif resposta == 2:  # Mudar status
-                novo_status = input('Status: ')
-                self.usuario_logado.set_status(novo_status)
-            elif resposta == 3:  # Mudar apelido
-                novo_apelido = input('Apelido: ')
-                self.usuario_logado.set_apelido(novo_apelido)
-            elif resposta == 4:  # Mudar idade
-                nova_idade = int(input('Idade: '))
-                self.usuario_logado.set_idade(nova_idade)
-            elif resposta == 5:  # Mudar nome
-                novo_nome = input('Nome: ')
-                self.usuario_logado.set_nome(novo_nome)
-            elif resposta == 6:  # Listar usuario
-                self.listar_usuarios()
+        while True:
+            opcao = input('\n\tmenu principal:\n'
+                          'U usuarios\n'
+                          '> ')
+            if opcao == 'U':
+
+                while True:
+                    opcao = input('\n\tusuarios:\n'
+                                  'l listar\n'
+                                  '> ')
+                    if opcao == 'l':
+                        self.listar_usuarios()
+                    elif opcao == '\\':
+                        break
+
+            elif opcao == '\\':
+                print('nenhum menu acima deste')
+
             else:
-                print("Opção inválida!")
+                print('opção inválida')
 
     def login(self):
         tem_conta = input("Tens conta? (s/n): ")
@@ -74,5 +67,3 @@ class Sistema:
                 return self.cadastrar_conta()
             else:
                 exit()
-
-
