@@ -1,0 +1,7 @@
+
+# arquivos do PyCharm
+.idea
+
+# arquivos compilados do Python
+__pycache__/
+
