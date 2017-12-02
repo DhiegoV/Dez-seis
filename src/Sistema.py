@@ -1,12 +1,13 @@
 
 from src.Usuario import Usuario
 
+
 class Sistema:
 
     def __init__(self):
         self.usuarios = []
         self.usuario_logado = self.login()
-        self.menu()
+        self.mostrar_menu()
 
     def cadastrar_conta(self):
         nome = input("Nome: ")
@@ -25,40 +26,64 @@ class Sistema:
     def listar_usuarios(self):
         for usuario in self.usuarios:
             print(usuario)
+
     def deslogar(self):
         self.usuario_logado = self.login()
 
-    def menu(self):
-        while True:
-            print("\n1. Remover conta"
-                  "\n2. Mudar status"
-                  "\n3. Mudar apelido"
-                  "\n4. Mudar idade"
-                  "\n5. Mudar nome"
-                  "\n6. Listar usuários"
-                  "\n0. Sair, Altair")
-            resposta = int(input(": "))
+    def mostrar_menu(self):
 
-            if resposta == 0:  # Sair
+        while True:
+            opcao = input('\n\tmenu principal:'
+                          '\nC conta'
+                          '\nU usuarios'
+                          '\nd deslogar'
+                          '\n> ')
+            if opcao == 'C':
+                while True:
+                    opcao = input('\n\t\tconta:'
+                                  '\nmudar:'
+                                  '\n\ts status'
+                                  '\n\ta apelido'
+                                  '\n\ti idade'
+                                  '\n\tn nome'
+                                  '\n'
+                                  '\nd desativar'
+                                  '\n> ')
+                    if opcao == 's':
+                        novo_status = input('novo status: ')
+                        self.usuario_logado.set_status(novo_status)
+                    elif opcao == 'a':
+                        novo_apelido = input('novo apelido: ')
+                        self.usuario_logado.set_apelido(novo_apelido)
+                    elif opcao == 'i':
+                        nova_idade = int(input('Idade: '))
+                        self.usuario_logado.set_idade(nova_idade)
+                    elif opcao == 'n':
+                        novo_nome = input('Nome: ')
+                        self.usuario_logado.set_nome(novo_nome)
+                    elif opcao == 'd':
+                        self.remover_conta(self.usuario_logado)
+                    elif opcao == '\\':
+                        break
+                    else:
+                        print('opção inválida')
+
+            elif opcao == 'U':
+                while True:
+                    opcao = input('\n\tusuarios:'
+                                  '\nl listar'
+                                  '\n> ')
+                    if opcao == 'l':
+                        self.listar_usuarios()
+                    elif opcao == '\\':
+                        break
+
+            elif opcao == 'd':
                 self.deslogar()
-            elif resposta == 1:  # Remover conta
-                self.remover_conta(self.usuario_logado)
-            elif resposta == 2:  # Mudar status
-                novo_status = input('Status: ')
-                self.usuario_logado.set_status(novo_status)
-            elif resposta == 3:  # Mudar apelido
-                novo_apelido = input('Apelido: ')
-                self.usuario_logado.set_apelido(novo_apelido)
-            elif resposta == 4:  # Mudar idade
-                nova_idade = int(input('Idade: '))
-                self.usuario_logado.set_idade(nova_idade)
-            elif resposta == 5:  # Mudar nome
-                novo_nome = input('Nome: ')
-                self.usuario_logado.set_nome(novo_nome)
-            elif resposta == 6:  # Listar usuario
-                self.listar_usuarios()
+            elif opcao == '\\':
+                print('nenhum menu acima deste')
             else:
-                print("Opção inválida!")
+                print('opção inválida')
 
     def login(self):
         tem_conta = input("Tens conta? (s/n): ")
@@ -80,5 +105,3 @@ class Sistema:
                 return self.cadastrar_conta()
             else:
                 exit()
-
-
