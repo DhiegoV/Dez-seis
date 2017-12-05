@@ -1,5 +1,5 @@
 
-from src.Usuario import Usuario
+from usuario import Usuario
 
 
 class Sistema:
