@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from src.usuario import Usuario
 import psycopg2
