@@ -1,11 +1,12 @@
 
 from src.usuario import Usuario
+import psycopg2
 
 
 class Sistema:
 
     def __init__(self):
-        self.usuarios = []
+        self.conexao = psycopg2.connect(host="localhost", database="dez_seis", user="postgres", password="postgres")
         self.usuario_logado = self.login()
         self.mostrar_menu()
 
@@ -14,13 +15,20 @@ class Sistema:
         email = input("Email: ")
         senha = input("Senha: ")
         idade = int(input("Idade: "))
+        apelido = input("Apelido: ")
 
-        usuario = Usuario(nome, email, idade, senha)
-        self.usuarios.append(usuario)
-        return usuario
+        cursor = self.conexao.cursor()
+        cursor.execute(
+            'INSERT INTO usuario(nome, email, idade, senha, apelido) VALUES (%s, %s, %s, %s, %s)',
+            (nome, email, idade, senha, apelido)
+        )
+        cursor.close()
+        self.conexao.commit()
 
     def remover_conta(self, usuario_logado):
-        self.usuarios.remove(usuario_logado)
+        cursor = self.conexao.cursor()
+        cursor.execute('DELETE FROM usuario WHERE email=\'{}\''.format(self.usuario_logado.email))
+        cursor.close()
         exit()
 
     def listar_usuarios(self):
@@ -93,11 +101,14 @@ class Sistema:
                 email = input("Email: ")
                 senha = input("Senha: ")
 
-                for usuario in self.usuarios:
-                    if usuario.get_email() == email and usuario.get_senha() == senha:
-                        return usuario
+                cursor = self.conexao.cursor()
+                cursor.execute('SELECT * from usuario where email=\'{}\''.format(email))
+                tupla = cursor.fetchone()
+                cursor.close()
+                if tupla[3] == senha:
+                    return Usuario(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4], tupla[5])
                 else:
-                    print("senha incorreta ou usuário não cadastrado")
+                    print('senha inválida')
         else:
             deseja_ter_conta = input("Desejas uma? (s/n): ")
 

@@ -1,13 +1,13 @@
 
 class Usuario:
 
-    def __init__(self, nome, email, idade, senha):
+    def __init__(self, nome, email, idade, senha, status='', apelido=''):
         self.nome = nome
         self.email = email
         self.idade = idade
         self.senha = senha
-        self.status = ""
-        self.apelido = ""
+        self.status = status
+        self.apelido = apelido
 
     def set_status(self, status):
         self.status = status
