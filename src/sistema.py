@@ -30,6 +30,7 @@ class Sistema:
         cursor = self.conexao.cursor()
         cursor.execute('DELETE FROM usuario WHERE email=\'{}\''.format(self.usuario_logado.email))
         cursor.close()
+        self.conexao.commit()
         exit()
 
     def listar_usuarios(self):
