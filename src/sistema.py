@@ -34,8 +34,17 @@ class Sistema:
         exit()
 
     def listar_usuarios(self):
-        for usuario in self.usuarios:
-            print(usuario)
+        cursor = self.conexao.cursor()
+        cursor.execute('select nome from usuario')
+
+        print('nomes:')
+        while True:
+            linha = cursor.fetchone()
+            if not linha:
+                break
+            print(linha[0])
+
+        cursor.close()
 
     def deslogar(self):
         self.usuario_logado = self.login()
