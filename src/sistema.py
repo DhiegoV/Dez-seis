@@ -26,6 +26,8 @@ class Sistema:
         cursor.close()
         self.conexao.commit()
 
+        return Usuario(nome, email, idade, senha, '', apelido)
+
     def remover_conta(self, usuario_logado):
         cursor = self.conexao.cursor()
         cursor.execute('DELETE FROM usuario WHERE email=\'{}\''.format(self.usuario_logado.email))
