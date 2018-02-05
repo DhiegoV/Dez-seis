@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from src.usuario import Usuario
-import psycopg2
-
+from src.DAOs.SistemaDAO import SistemaDAO
 
 class Sistema:
 
     def __init__(self):
-        self.conexao = psycopg2.connect(host="localhost", database="dez_seis", user="postgres", password="postgres")
         self.usuario_logado = self.login()
         self.mostrar_menu()
 
@@ -18,35 +16,20 @@ class Sistema:
         idade = int(input("Idade: "))
         apelido = input("Apelido: ")
 
-        cursor = self.conexao.cursor()
-        cursor.execute(
-            'INSERT INTO usuario(nome, email, idade, senha, apelido) VALUES (%s, %s, %s, %s, %s)',
-            (nome, email, idade, senha, apelido)
-        )
-        cursor.close()
-        self.conexao.commit()
+        SistemaDAO().cadastrar_conta(nome, email, senha, idade, apelido)
 
         return Usuario(nome, email, idade, senha, '', apelido)
 
     def remover_conta(self, usuario_logado):
-        cursor = self.conexao.cursor()
-        cursor.execute('DELETE FROM usuario WHERE email=\'{}\''.format(self.usuario_logado.email))
-        cursor.close()
-        self.conexao.commit()
+        SistemaDAO().remover_conta(usuario_logado)
         exit()
 
     def listar_usuarios(self):
-        cursor = self.conexao.cursor()
-        cursor.execute('select nome from usuario')
+        usuarios = SistemaDAO().obter_usuarios()
 
         print('nomes:')
-        while True:
-            linha = cursor.fetchone()
-            if not linha:
-                break
-            print(linha[0])
-
-        cursor.close()
+        for usuario in usuarios:
+            print(usuario[0])
 
     def deslogar(self):
         self.usuario_logado = self.login()
@@ -114,17 +97,21 @@ class Sistema:
                 email = input("Email: ")
                 senha = input("Senha: ")
 
-                cursor = self.conexao.cursor()
-                cursor.execute('SELECT * from usuario where email=\'{}\''.format(email))
-                tupla = cursor.fetchone()
-                cursor.close()
-                if tupla[3] == senha:
-                    return Usuario(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4], tupla[5])
+                usuario = SistemaDAO().buscar_usuario(email)
+
+                if usuario['senha'] == senha:
+                    return Usuario(
+                        usuario['nome'],
+                        usuario['email'],
+                        usuario['senha'],
+                        usuario['idade'],
+                        usuario['status'],
+                        usuario['apelido']
+                    )
                 else:
                     print('senha inválida')
         else:
             deseja_ter_conta = input("Desejas uma? (s/n): ")
-
             if deseja_ter_conta == "s":
                 return self.cadastrar_conta()
             else:
