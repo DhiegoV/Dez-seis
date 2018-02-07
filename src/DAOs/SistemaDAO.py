@@ -1,4 +1,4 @@
-
+from src.usuario import Usuario
 import psycopg2
 
 class SistemaDAO:
@@ -10,11 +10,17 @@ class SistemaDAO:
             user="postgres",
             password="postgres")
 
-    def cadastrar_conta(self, nome, email, senha, idade, apelido):
+    def cadastrar_conta(self, usuario):
         cursor = self.conexao.cursor()
         cursor.execute(
             'insert into usuario(nome, email, idade, senha, apelido) VALUES ' +
-            '(\'{}\', \'{}\', \'{}\', \'{}\', \'{}\')'.format(nome, email, idade, senha, apelido)
+            '(\'{}\', \'{}\', \'{}\', \'{}\', \'{}\')'.format(
+                usuario.get_nome(),
+                usuario.get_email(),
+                usuario.get_idade(),
+                usuario.get_senha(),
+                usuario.get_apelido()
+            )
         )
         cursor.close()
         self.conexao.commit()
@@ -38,12 +44,5 @@ class SistemaDAO:
         tupla = cursor.fetchone()
         cursor.close()
 
-        usuario = dict(
-            nome=tupla[0],
-            email=tupla[1],
-            idade=tupla[2],
-            senha=tupla[3],
-            status=tupla[4],
-            apelido=tupla[5]
-        )
+        usuario = Usuario(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4], tupla[5])
         return usuario
