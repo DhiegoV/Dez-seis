@@ -1,5 +1,5 @@
 from src.usuario import Usuario
-from src.ExceptFile3000 import AuthenticationException
+from src.ExceptFile3000 import *
 
 class Menu:
 
@@ -7,13 +7,41 @@ class Menu:
         self.sistema = sistema
 
     def mostrar_menu_cadastro(self):
-        nome = input("Nome: ")
-        email = input("Email: ")
-        senha = input("Senha: ")
-        idade = int(input("Idade: "))
+
+        while True:
+            nome = input("Nome: ")
+            email = input("Email: ")
+            senha = input("Senha: ")
+
+            try:
+                if nome == '':
+                    raise NotNullAttributeNull
+                if email == '':
+                    raise NotNullAttributeNull
+                if senha == '':
+                    raise NotNullAttributeNull
+
+                break
+            except NotNullAttributeNull:
+                print('Os atributos: nome, email ou senha não podem ser nulos')
+
+        while True:
+            try:
+                idade = int(input("Idade: "))
+
+                if idade < 0:
+                    raise LessThanZeroAgeException
+                break
+            except ValueError:
+                print('A idade só aceita numeros inteiros ou não nulos')
+            except LessThanZeroAgeException:
+                print('A idade não aceita numeros menores que 0')
+
         apelido = input("Apelido: ")
 
         usuario = Usuario(nome, email, idade, senha, '', apelido)
+
+
         self.sistema.cadastrar_conta(usuario)
 
     def listar_usuarios(self, usuarios):
@@ -89,3 +117,5 @@ class Menu:
             self.sistema.autenticar(email, senha)
         except AuthenticationException:
             print('Email e senha não correspondem, tente novamente.')
+        except EmailNotFoundException:
+            print('O email não foi encontrado :(')

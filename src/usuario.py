@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-
+from src.ExceptFile3000 import LessThanZeroAgeException
 class Usuario:
 
     def __init__(self, nome, email, idade, senha, status='', apelido=''):
         self.nome = nome
         self.email = email
+        if idade < 0:
+            raise LessThanZeroAgeException
         self.idade = idade
         self.senha = senha
         self.status = status

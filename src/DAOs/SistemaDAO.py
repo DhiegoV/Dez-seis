@@ -1,4 +1,5 @@
 from src.usuario import Usuario
+from src.ExceptFile3000 import EmailNotFoundException, NotNullAttributeNull
 import psycopg2
 
 class SistemaDAO:
@@ -11,6 +12,13 @@ class SistemaDAO:
             password="postgres")
 
     def cadastrar_conta(self, usuario):
+
+        if usuario.get_nome() == '' \
+                or usuario.get_email() == ''\
+                or usuario.get_idade() == ''\
+                or usuario.get_senha() == '':
+            raise NotNullAttributeNull
+
         cursor = self.conexao.cursor()
         cursor.execute(
             'insert into usuario(nome, email, idade, senha, apelido) VALUES ' +
@@ -43,6 +51,9 @@ class SistemaDAO:
         cursor.execute('select * from usuario where email=\'{}\''.format(email))
         tupla = cursor.fetchone()
         cursor.close()
+
+        if not tupla:
+            raise EmailNotFoundException
 
         usuario = Usuario(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4], tupla[5])
         return usuario
