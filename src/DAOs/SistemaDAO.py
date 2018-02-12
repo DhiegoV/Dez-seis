@@ -11,7 +11,7 @@ class SistemaDAO:
             user="postgres",
             password="postgres")
 
-    def cadastrar_conta(self, usuario):
+    def cadastrar_usuario(self, usuario):
 
         if usuario.get_nome() == '' \
                 or usuario.get_email() == ''\
@@ -33,7 +33,7 @@ class SistemaDAO:
         cursor.close()
         self.conexao.commit()
 
-    def remover_conta(self, usuario_logado):
+    def remover_usuario(self, usuario_logado):
         cursor = self.conexao.cursor()
         cursor.execute('delete from usuario where email=\'{}\''.format(usuario_logado.email))
         cursor.close()

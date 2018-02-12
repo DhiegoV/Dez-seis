@@ -42,7 +42,7 @@ class Menu:
         usuario = Usuario(nome, email, idade, senha, '', apelido)
 
 
-        self.sistema.cadastrar_conta(usuario)
+        self.sistema.cadastrar_usuario(usuario)
 
     def listar_usuarios(self, usuarios):
         print('nomes:')
@@ -76,7 +76,7 @@ class Menu:
                           '\n> ')
 
             if opcao == 'd':
-                self.sistema.remover_conta()
+                self.sistema.remover_usuario()
             elif opcao == '\\':
                 self.mostrar_menu_principal()
             else:

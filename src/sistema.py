@@ -12,11 +12,11 @@ class Sistema:
         self.menu.mostrar_menu_inicial()
         self.usuario_logado = None
 
-    def cadastrar_conta(self, usuario):
-        SistemaDAO().cadastrar_conta(usuario)
+    def cadastrar_usuario(self, usuario):
+        SistemaDAO().cadastrar_usuario(usuario)
 
-    def remover_conta(self):
-        SistemaDAO().remover_conta(self.usuario_logado)
+    def remover_usuario(self):
+        SistemaDAO().remover_usuario(self.usuario_logado)
         exit()
 
     def autenticar(self, email, senha):
