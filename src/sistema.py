@@ -9,14 +9,15 @@ class Sistema:
 
     def __init__(self):
         self.menu = Menu(self)
+        self.usuariodao = UsuarioDAO()
         self.menu.mostrar_menu_inicial()
         self.usuario_logado = None
 
     def cadastrar_usuario(self, usuario):
-        UsuarioDAO().cadastrar_usuario(usuario)
+        self.usuariodao.cadastrar_usuario(usuario)
 
     def remover_usuario(self):
-        UsuarioDAO().remover_usuario(self.usuario_logado)
+        self.usuariodao.remover_usuario(self.usuario_logado)
         exit()
 
     def autenticar(self, email, senha):
@@ -29,10 +30,10 @@ class Sistema:
             raise AuthenticationException
 
     def buscar_usuario(self, email):
-        return UsuarioDAO().buscar_usuario(email)
+        return self.usuariodao.buscar_usuario(email)
 
     def listar_usuarios(self):
-        usuarios = UsuarioDAO().obter_usuarios()
+        usuarios = self.usuariodao.obter_usuarios()
         self.menu.listar_usuarios(usuarios)
 
     def deslogar(self):
