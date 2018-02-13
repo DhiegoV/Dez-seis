@@ -1,5 +1,6 @@
 from src.usuario import Usuario
 from src.ExceptFile3000 import *
+import os
 
 class Menu:
 
@@ -7,6 +8,7 @@ class Menu:
         self.sistema = sistema
 
     def mostrar_menu_cadastro(self):
+        self.limpar_tela()
 
         while True:
             nome = input("Nome: ")
@@ -45,12 +47,15 @@ class Menu:
         self.sistema.cadastrar_usuario(usuario)
 
     def listar_usuarios(self, usuarios):
-        print('nomes:')
+        saida = 'nomes:\n'
         for usuario in usuarios:
-            print(usuario[0])
+            saida += usuario[0] + '\n'
+
+        self.print_limpo(saida)
 
     def mostrar_menu_principal(self):
         while True:
+            self.limpar_tela()
 
             opcao = input('\n\tmenu principal:'
                           '\nC conta'
@@ -65,12 +70,13 @@ class Menu:
                 self.sistema.deslogar()
                 self.mostrar_menu_inicial()
             elif opcao == '\\':
-                print('nenhum menu acima deste')
+                self.print_limpo('nenhum menu acima deste')
             else:
-                print('opção inválida')
+                self.print_limpo('opção inválida')
 
     def mostrar_menu_conta(self):
         while True:
+            self.limpar_tela()
             opcao = input('\n\t\tconta:'
                           '\nd desativar'
                           '\n> ')
@@ -80,10 +86,11 @@ class Menu:
             elif opcao == '\\':
                 self.mostrar_menu_principal()
             else:
-                print('opção inválida')
+                self.print_limpo('opção inválida')
 
     def mostrar_menu_usuario(self):
         while True:
+            self.limpar_tela()
             opcao = input('\n\tusuarios:'
                           '\nl listar'
                           '\n> ')
@@ -93,8 +100,8 @@ class Menu:
                 self.mostrar_menu_principal()
 
     def mostrar_menu_inicial(self):
-
         while True:
+            self.limpar_tela()
             print(
                 '\n\tBem-vindo ao Dez&Seis!'
                 '\nl logar'
@@ -110,12 +117,29 @@ class Menu:
                 exit()
 
     def mostrar_menu_login(self):
+        self.limpar_tela()
         email = input("Email: ")
         senha = input("Senha: ")
 
         try:
             self.sistema.autenticar(email, senha)
         except AuthenticationException:
-            print('Email e senha não correspondem, tente novamente.')
+            self.print_limpo('Email e senha não correspondem, tente novamente.')
         except EmailNotFoundException:
-            print('O email não foi encontrado :(')
+            self.print_limpo('O email não foi encontrado :(')
+
+    def print_limpo(self, mensagem):
+        self.limpar_tela()
+        print(mensagem)
+        input('\n'
+              'digite [Enter] para continuar')
+
+    def limpar_tela(self):
+        if os.name == 'posix' and os.system('env | grep TERM > /dev/null') == 0:
+            # se num Linux, BSD, etc e se num terminal
+            os.system('clear')
+        elif os.name == 'nt':
+            os.system('cls')
+        else:
+            print('\n' * 100)
+
