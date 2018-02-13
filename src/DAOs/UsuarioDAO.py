@@ -2,7 +2,7 @@ from src.usuario import Usuario
 from src.ExceptFile3000 import EmailNotFoundException, NotNullAttributeNull
 import psycopg2
 
-class SistemaDAO:
+class UsuarioDAO:
 
     def __init__(self):
         self.conexao = psycopg2.connect(

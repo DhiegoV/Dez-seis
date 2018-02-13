@@ -2,7 +2,7 @@
 
 from src.ExceptFile3000 import AuthenticationException
 from src.usuario import Usuario
-from src.DAOs.SistemaDAO import SistemaDAO
+from src.DAOs.UsuarioDAO import UsuarioDAO
 from src.Interface.Menu import Menu
 
 class Sistema:
@@ -13,10 +13,10 @@ class Sistema:
         self.usuario_logado = None
 
     def cadastrar_usuario(self, usuario):
-        SistemaDAO().cadastrar_usuario(usuario)
+        UsuarioDAO().cadastrar_usuario(usuario)
 
     def remover_usuario(self):
-        SistemaDAO().remover_usuario(self.usuario_logado)
+        UsuarioDAO().remover_usuario(self.usuario_logado)
         exit()
 
     def autenticar(self, email, senha):
@@ -29,10 +29,10 @@ class Sistema:
             raise AuthenticationException
 
     def buscar_usuario(self, email):
-        return SistemaDAO().buscar_usuario(email)
+        return UsuarioDAO().buscar_usuario(email)
 
     def listar_usuarios(self):
-        usuarios = SistemaDAO().obter_usuarios()
+        usuarios = UsuarioDAO().obter_usuarios()
         self.menu.listar_usuarios(usuarios)
 
     def deslogar(self):
