@@ -41,3 +41,8 @@ class Sistema:
 
     def login(self):
         self.menu.mostrar_menu_login()
+
+    def enviar_pedido_amizade(self, destinatario):
+        pedido_amizade = \
+            self.usuario_logado.get_nome() + ' quer ser seu amigo'
+        self.usuariodao.enviar_notificacao(destinatario, pedido_amizade)

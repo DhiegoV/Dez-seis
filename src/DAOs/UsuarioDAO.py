@@ -1,5 +1,6 @@
 from src.usuario import Usuario
 from src.ExceptFile3000 import EmailNotFoundException, NotNullAttributeNull
+from datetime import datetime
 import psycopg2
 
 class UsuarioDAO:
@@ -57,3 +58,10 @@ class UsuarioDAO:
 
         usuario = Usuario(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4], tupla[5])
         return usuario
+
+    def enviar_notificacao(self, destinatario, mensagem):
+        cursor = self.conexao.cursor()
+        cursor.execute('insert into notificacao(email_usuario, mensagem) values ' +
+                       '(\'{}\', \'{}\')'.format(destinatario.get_email(), mensagem))
+        cursor.close()
+        self.conexao.commit()

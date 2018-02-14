@@ -10,3 +10,18 @@ create table usuario (
 	apelido varchar(50) default '',
 	primary key(email)
 );
+
+create table notificacao (
+	email_usuario varchar(100),
+	mensagem varchar(50),
+
+	foreign key(email_usuario) references usuario(email) on delete cascade
+);
+
+create table amizade (
+	email_usuario1 varchar(100),
+	email_usuario2 varchar(100),
+
+	foreign key(email_usuario1) references usuario(email) on delete cascade,
+	foreign key(email_usuario2) references usuario(email) on delete cascade
+)

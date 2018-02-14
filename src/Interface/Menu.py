@@ -93,11 +93,25 @@ class Menu:
             self.limpar_tela()
             opcao = input('\n\tusuarios:'
                           '\nl listar'
+                          '\na adicionar amigo'
                           '\n> ')
             if opcao == 'l':
                 self.sistema.listar_usuarios()
+            elif opcao == 'a':
+                self.mostrar_menu_adicionar_amigo()
             elif opcao == '\\':
                 self.mostrar_menu_principal()
+
+    def mostrar_menu_adicionar_amigo(self):
+        self.limpar_tela()
+        email = input('Email do destinatário de sua solicitação: ')
+
+        try:
+            destinatario = self.sistema.buscar_usuario(email)
+        except EmailNotFoundException:
+            self.print_limpo('Email não encontrado :(')
+
+        self.sistema.enviar_pedido_amizade(destinatario)
 
     def mostrar_menu_inicial(self):
         while True:
