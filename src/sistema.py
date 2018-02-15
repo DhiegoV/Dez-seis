@@ -32,6 +32,9 @@ class Sistema:
     def buscar_usuario(self, email):
         return self.usuariodao.buscar_usuario(email)
 
+    def buscar_notificacoes(self):
+        self.usuariodao.buscar_notificacoes(self.usuario_logado)
+
     def listar_usuarios(self):
         usuarios = self.usuariodao.obter_usuarios()
         self.menu.listar_usuarios(usuarios)

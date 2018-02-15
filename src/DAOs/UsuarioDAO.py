@@ -10,7 +10,7 @@ class UsuarioDAO:
             host="localhost",
             database="dez_seis",
             user="postgres",
-            password="postgres")
+            password="1111")
 
     # ALTERAÇÕES
 
@@ -56,6 +56,12 @@ class UsuarioDAO:
     def obter_usuarios(self):
         usuarios = self.consultar_banco('select nome from usuario')
         return usuarios
+
+    def buscar_notificacoes(self, usuario):
+        self.consultar_banco(
+            'select mensagem, foi_lida from notificacao where email=\'{}\''
+            .format(usuario.get_email())
+        )
 
     # MÉTODOS DE UTILIDADE
 

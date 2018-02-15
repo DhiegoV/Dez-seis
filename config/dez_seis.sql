@@ -14,6 +14,7 @@ create table usuario (
 create table notificacao (
 	email_usuario varchar(100),
 	mensagem varchar(50),
+	foi_lida boolean default 'false',
 
 	foreign key(email_usuario) references usuario(email) on delete cascade
 );

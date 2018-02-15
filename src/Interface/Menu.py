@@ -60,10 +60,13 @@ class Menu:
             opcao = input('\n\tmenu principal:'
                           '\nC conta'
                           '\nU usuarios'
+                          '\nn notificações'
                           '\nd deslogar'
                           '\n> ')
             if opcao == 'C':
                 self.mostrar_menu_conta()
+            elif opcao == 'n':
+                self.mostrar_menu_notificacoes()
             elif opcao == 'U':
                 self.mostrar_menu_usuario()
             elif opcao == 'd':
@@ -87,6 +90,9 @@ class Menu:
                 self.mostrar_menu_principal()
             else:
                 self.print_limpo('opção inválida')
+
+    def mostrar_menu_notificacoes(self):
+        self.sistema.buscar_notificacoes()
 
     def mostrar_menu_usuario(self):
         while True:
