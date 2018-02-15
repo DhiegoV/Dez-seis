@@ -12,6 +12,8 @@ class UsuarioDAO:
             user="postgres",
             password="postgres")
 
+    # ALTERAÇÕES
+
     def cadastrar_usuario(self, usuario):
 
         if usuario.get_nome() == '' \
@@ -20,8 +22,7 @@ class UsuarioDAO:
                 or usuario.get_senha() == '':
             raise NotNullAttributeNull
 
-        cursor = self.conexao.cursor()
-        cursor.execute(
+        self.alterar_banco(
             'insert into usuario(nome, email, idade, senha, apelido) VALUES ' +
             '(\'{}\', \'{}\', \'{}\', \'{}\', \'{}\')'.format(
                 usuario.get_nome(),
@@ -31,27 +32,20 @@ class UsuarioDAO:
                 usuario.get_apelido()
             )
         )
-        cursor.close()
-        self.conexao.commit()
+
+    def enviar_notificacao(self, destinatario, mensagem):
+        self.alterar_banco(
+            'insert into notificacao(email_usuario, mensagem) values ' +
+            '(\'{}\', \'{}\')'.format(destinatario.get_email(), mensagem)
+        )
 
     def remover_usuario(self, usuario_logado):
-        cursor = self.conexao.cursor()
-        cursor.execute('delete from usuario where email=\'{}\''.format(usuario_logado.email))
-        cursor.close()
-        self.conexao.commit()
+        self.alterar_banco('delete from usuario where email=\'{}\''.format(usuario_logado.email))
 
-    def obter_usuarios(self):
-        cursor = self.conexao.cursor()
-        cursor.execute('select nome from usuario')
-        usuarios = cursor.fetchall()
-        cursor.close()
-        return usuarios
+    # CONSULTAS
 
     def buscar_usuario(self, email):
-        cursor = self.conexao.cursor()
-        cursor.execute('select * from usuario where email=\'{}\''.format(email))
-        tupla = cursor.fetchone()
-        cursor.close()
+        tupla = self.consultar_banco('select * from usuario where email=\'{}\''.format(email))
 
         if not tupla:
             raise EmailNotFoundException
@@ -59,9 +53,20 @@ class UsuarioDAO:
         usuario = Usuario(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4], tupla[5])
         return usuario
 
-    def enviar_notificacao(self, destinatario, mensagem):
+    def obter_usuarios(self):
+        usuarios = self.consultar_banco('select nome from usuario')
+        return usuarios
+
+    # MÉTODOS DE UTILIDADE
+
+    def alterar_banco(self, comando_sql):
         cursor = self.conexao.cursor()
-        cursor.execute('insert into notificacao(email_usuario, mensagem) values ' +
-                       '(\'{}\', \'{}\')'.format(destinatario.get_email(), mensagem))
+        cursor.execute(comando_sql)
         cursor.close()
         self.conexao.commit()
+
+    def consultar_banco(self, comando_sql):
+        cursor = self.conexao.cursor()
+        tupla = cursor.execute(comando_sql)
+        cursor.close()
+        return tupla
