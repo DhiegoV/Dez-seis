@@ -10,7 +10,7 @@ class UsuarioDAO:
             host="localhost",
             database="dez_seis",
             user="postgres",
-            password="1111")
+            password="postgres")
 
     # ALTERAÇÕES
 
@@ -45,7 +45,8 @@ class UsuarioDAO:
     # CONSULTAS
 
     def buscar_usuario(self, email):
-        tupla = self.consultar_banco('select * from usuario where email=\'{}\''.format(email))
+        lista_tuplas = self.consultar_banco('select * from usuario where email=\'{}\''.format(email))
+        tupla = lista_tuplas[0]
 
         if not tupla:
             raise EmailNotFoundException
@@ -73,6 +74,7 @@ class UsuarioDAO:
 
     def consultar_banco(self, comando_sql):
         cursor = self.conexao.cursor()
-        tupla = cursor.execute(comando_sql)
+        cursor.execute(comando_sql)
+        tupla = cursor.fetchall()
         cursor.close()
         return tupla
