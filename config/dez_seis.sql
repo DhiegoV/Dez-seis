@@ -12,11 +12,13 @@ create table usuario (
 );
 
 create table notificacao (
-	email_usuario varchar(100),
+    email_remetente varchar(100),
+    email_destinatario varchar(100),
 	mensagem varchar(50),
-	foi_lida boolean default 'false',
+	tipo varchar(20),
 
-	foreign key(email_usuario) references usuario(email) on delete cascade
+	foreign key(email_rementente) references usuario(email) on delete cascade,
+	foreign key(email_destinatario) references usuario(email) on delete cascade
 );
 
 create table amizade (

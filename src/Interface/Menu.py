@@ -1,5 +1,6 @@
 from src.usuario import Usuario
 from src.ExceptFile3000 import *
+from src.notificacao.PedidoAmizade import PedidoAmizade
 import os
 
 class Menu:
@@ -92,7 +93,44 @@ class Menu:
                 self.print_limpo('opção inválida')
 
     def mostrar_menu_notificacoes(self):
-        self.sistema.buscar_notificacoes()
+        notificacoes = self.sistema.buscar_notificacoes()
+        if not notificacoes:
+            self.print_limpo('Não há notificações')
+            return
+        while True:
+            self.limpar_tela()
+            for notificacao in notificacoes:
+                print(notificacoes.index(notificacao), notificacao)
+            opcao = input('número: ')
+
+            if opcao == '\\':
+                return
+            try:
+                notificacao = notificacoes[int(opcao)]
+            except IndexError:
+                self.print_limpo('opção inválida')
+
+            if isinstance(notificacao, PedidoAmizade):
+                self.mostrar_menu_pedido_amizade(notificacao)
+            else:
+                self.print_limpo(notificacao)
+
+    def mostrar_menu_pedido_amizade(self, pedido_amizade):
+        self.limpar_tela()
+        while True:
+            print(
+                pedido_amizade,
+                '\n'
+                '\na aceitar'
+                '\ni ignorar'
+            )
+            opcao = input('>')
+            if opcao == 'a':
+                self.sistema.estabelecer_amizade(pedido_amizade)
+            elif opcao == 'i':
+                return
+            else:
+                self.print_limpo('opcão inválida')
 
     def mostrar_menu_usuario(self):
         while True:
@@ -116,6 +154,7 @@ class Menu:
             destinatario = self.sistema.buscar_usuario(email)
         except EmailNotFoundException:
             self.print_limpo('Email não encontrado :(')
+            return
 
         self.sistema.enviar_pedido_amizade(destinatario)
 

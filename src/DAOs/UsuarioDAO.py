@@ -1,6 +1,7 @@
 from src.usuario import Usuario
-from src.ExceptFile3000 import EmailNotFoundException, NotNullAttributeNull
-from datetime import datetime
+from src.ExceptFile3000 import *
+from src.notificacao.PedidoAmizade import PedidoAmizade
+from src.notificacao.Notificacao import Notificacao
 import psycopg2
 
 class UsuarioDAO:
@@ -39,6 +40,26 @@ class UsuarioDAO:
             '(\'{}\', \'{}\')'.format(destinatario.get_email(), mensagem)
         )
 
+    def enviar_pedido_amizade(self, pedido_amizade):
+        self.alterar_banco(
+            'insert into notificacao(email_remetente, email_destinatario, mensagem, tipo) '
+            "values ('{}', '{}', '{}', '{}')".format(
+                pedido_amizade.get_remetente().get_email(),
+                pedido_amizade.get_destinatario().get_email(),
+                pedido_amizade.get_mensagem(),
+                'PedidoAmizade'
+            )
+        )
+
+    def estabelecer_amizade(self, remetente, destinatario):
+        self.alterar_banco(
+            'insert into amizade '
+            "values ('{}', '{}')".format(
+                remetente.get_email(),
+                destinatario.get_email()
+            )
+        )
+
     def remover_usuario(self, usuario_logado):
         self.alterar_banco('delete from usuario where email=\'{}\''.format(usuario_logado.email))
 
@@ -46,10 +67,11 @@ class UsuarioDAO:
 
     def buscar_usuario(self, email):
         lista_tuplas = self.consultar_banco('select * from usuario where email=\'{}\''.format(email))
-        tupla = lista_tuplas[0]
 
-        if not tupla:
+        if not lista_tuplas:
             raise EmailNotFoundException
+
+        tupla = lista_tuplas[0]
 
         usuario = Usuario(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4], tupla[5])
         return usuario
@@ -59,10 +81,29 @@ class UsuarioDAO:
         return usuarios
 
     def buscar_notificacoes(self, usuario):
-        self.consultar_banco(
-            'select mensagem, foi_lida from notificacao where email=\'{}\''
+        tuplas = self.consultar_banco(
+            'select * from notificacao where email_destinatario=\'{}\''
             .format(usuario.get_email())
         )
+
+        if not tuplas:
+            return
+
+        notificacoes = []
+
+        for tupla in tuplas:
+            remetente = self.buscar_usuario(tupla[0])
+            destinatario = self.buscar_usuario(tupla[1])
+            mensagem = tupla[2]
+            if tupla[3] == 'PedidoAmizade':
+                notificacoes.append(PedidoAmizade(remetente, destinatario, mensagem))
+            else:
+                notificacoes.append(Notificacao(remetente, destinatario, mensagem))
+
+        return notificacoes
+
+    def criar_usuario(self, tupla):
+        return Usuario(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4], tupla[5])
 
     # MÉTODOS DE UTILIDADE
 
