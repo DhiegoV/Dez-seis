@@ -4,4 +4,5 @@
 
 # arquivos compilados do Python
 __pycache__/
+*.pyc
 

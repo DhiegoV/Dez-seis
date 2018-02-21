@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from src.usuario import Usuario
 from src.ExceptFile3000 import *
 from src.notificacao.PedidoAmizade import PedidoAmizade
