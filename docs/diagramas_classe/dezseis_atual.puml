@@ -1,0 +1,81 @@
+@startuml
+
+skinparam shadowing false
+
+class Usuario {
+    str nome
+    str email
+    int idade
+    str senha
+    str status
+    str apelido
+}
+
+class Sistema {
+    Menu menu
+    UsuarioDAO usuariodao
+    Usuario usuario_logado
+
+    cadastrar_usuario()
+    remover_usuario()
+    autenticar()
+    Usuario buscar_usuario(email)
+    list<Notificacao> buscar_notificacoes()
+    listar_usuarios()
+    deslogar()
+    login()
+    enviar_pedido_amizade(Usuario destinatario)
+    estabelecer_amizade(PedidoAmizade pedido_amizade)
+}
+Sistema *-down- Usuario
+Sistema *- Menu
+Sistema *-down- UsuarioDAO
+
+class Menu {
+    Sistema sistema
+
+    mostrar_menu_cadastro()
+    listar_usuarios(usuarios)
+    mostrar_menu_principal()
+    mostrar_menu_conta()
+    mostrar_menu_notificacoes()
+    mostrar_menu_pedido_amizade()
+    mostrar_menu_usuario()
+    mostrar_menu_adicionar_amigo()
+    mostrar_menu_inicial()
+    mostrar_menu_login()
+    print_limpo(mensagem)
+    limpar_tela()
+}
+Menu *- Sistema
+
+class UsuarioDAO {
+    connection conexao
+
+    cadastrar_usuario(usuario)
+    enviar_notificacao(destinatario, mensagem)
+    enviar_pedido_amizade(pedido_amizade)
+    estabelecer_amizade(remetente, destinatario)
+    remover_usuario(usuario_logado)
+    Usuario buscar_usuario(email)
+    list<tuple> obter_usuarios()
+    list<Notificacao> buscar_notificacoes(usuario)
+    Usuario criar_usuario(tupla)
+    alterar_banco(comando_sql)
+    list<tuple> consultar_banco(comando_sql)
+}
+
+class Notificacao {
+    Usuario remetente
+    Usuario destinatario
+    str mensagem
+}
+Notificacao <|-- PedidoAmizade
+
+class PedidoAmizade {
+}
+
+
+
+
+@enduml
